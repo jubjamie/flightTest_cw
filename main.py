@@ -102,7 +102,7 @@ def plot_neutral(masses_list, data_list, ignore=None):
     plt.legend(loc='lower left', shadow=True)
     plt.grid(True)
     plt.title("Static Stability, Controls Fixed")
-    plt.savefig('staticstability.png')
+    plt.savefig('/graphs/staticstability.png')
 
     plt.figure()
     plt.plot(cog_list, gradient_record, 'ro')
@@ -119,7 +119,7 @@ def plot_neutral(masses_list, data_list, ignore=None):
     plt.legend(loc='lower right', shadow=True)
     plt.grid(True)
     plt.title("Graph to Detirmine Neutral Point, Controls Fixed")
-    plt.savefig('neutralpointStatic.png')
+    plt.savefig('/graphs/neutralpointStatic.png')
     plt.show()
 
 
