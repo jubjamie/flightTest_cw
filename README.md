@@ -4,9 +4,14 @@ This is my calculation scripts for a flight test I conducted. The graphs below u
 ## Graphs
 These graphs automatically update to show the latest versions pushed to this repository.
 
+<h3>Stick Fixed</h3>
 <p align="center">
-
-<img src="graphs/staticstabilityFixed.png?raw=true" />
+<img src="graphs/staticstabilityFixed.png?raw=true" /><br />
 <img src="graphs/neutralpointStaticFixed.png?raw=true" />
-
+</p>
+<br />
+<h3>Stick Fixed</h3>
+<p align="center">
+<img src="graphs/staticstabilityFree.png?raw=true" />
+<img src="graphs/neutralpointStaticFree.png?raw=true" />
 </p>

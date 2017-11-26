@@ -92,13 +92,15 @@ def plot_static_stick_fixed(masses_list, data_list, ignore=None):
         z = np.polyfit(c_l, angle, 1)
         gradient_record.append(z[0])
         plt.plot(c_l, angle, point_bank[data_id % len(point_bank)],
-                 label='LoBF: ' + str(z) + '  CoG: ' + str(format(cogcalc(masses, row_pos), '.2f')))
+                 label='LoBF: ' + r'$\eta$' + '=[' + str(format(z[0], '.3f')) + r'$C_L$' + ' + ' +
+                       str(format(z[1], '.3f')) + ']  CoG: ' + str(format(cogcalc(masses, row_pos), '.2f')) +
+                       '% ' + r'$\bar{c}$')
         lobf = np.poly1d(z)
         plt.plot([0, np.max(c_l)], [lobf(0), lobf(np.max(c_l))], 'k-')
         max_c_l.append(np.max(c_l))
     plt.plot([0, np.max(max_c_l)], [0, 0], 'k-')
-    plt.xlabel('CL')
-    plt.ylabel('Elevator Angle')
+    plt.xlabel(r'$\bar{c}$')
+    plt.ylabel('Elevator Angle (' + r'$\eta^\circ$' + ')')
     plt.legend(loc='lower left', shadow=True)
     plt.grid(True)
     plt.title("Static Stability, Controls Fixed")
@@ -113,9 +115,9 @@ def plot_static_stick_fixed(masses_list, data_list, ignore=None):
     print(x_int)
     plt.plot([np.min(cog_list)-5, x_int+5], [0, 0], 'k-')
     plt.plot([np.min(cog_list), x_int+2], [lobf1(np.min(cog_list)), lobf1(x_int+2)], 'k-')
-    plt.plot(x_int, 0, 'rx', label='Stick Fixed Neutral Point: ' + str(format(x_int, '.2f')) + '%')
-    plt.xlabel('CoG %')
-    plt.ylabel('Elevator Gradient')
+    plt.plot(x_int, 0, 'rx', label='Stick Fixed Neutral Point ' + r'$h_n$' + ' : ' + str(format(x_int, '.2f')) + '%')
+    plt.xlabel('CoG % of ' + r'$\bar{c}$')
+    plt.ylabel('Elevator Gradient (' + r'd$\eta$/d$C_L$' + ')')
     plt.legend(loc='lower right', shadow=True)
     plt.grid(True)
     plt.title("Graph to Detirmine Neutral Point, Controls Fixed")
@@ -142,13 +144,15 @@ def plot_static_stick_free(masses_list, data_list, ignore=None):
         z = np.polyfit(c_l, angle, 1)
         gradient_record.append(z[0])
         plt.plot(c_l, angle, point_bank[data_id % len(point_bank)],
-                 label='LoBF: ' + str(z) + '  CoG: ' + str(format(cogcalc(masses, row_pos), '.2f')))
+                 label='LoBF: ' + r'$\beta$' + '=[' + str(format(z[0], '.3f')) + r'$C_L$' + ' + ' +
+                       str(format(z[1], '.3f')) + ']  CoG: ' + str(format(cogcalc(masses, row_pos), '.2f')) +
+                       '% ' + r'$\bar{c}$')
         lobf = np.poly1d(z)
         plt.plot([0, np.max(c_l)], [lobf(0), lobf(np.max(c_l))], 'k-')
         max_c_l.append(np.max(c_l))
     plt.plot([0, np.max(max_c_l)], [0, 0], 'k-')
-    plt.xlabel('CL')
-    plt.ylabel('Elevator Tab Angle')
+    plt.xlabel(r'$\bar{c}$')
+    plt.ylabel('Elevator Tab Angle (' + r'$\beta^circ$' + ')')
     plt.legend(loc='upper left', shadow=True)
     plt.grid(True)
     plt.title("Static Stability, Controls Free")
@@ -163,10 +167,10 @@ def plot_static_stick_free(masses_list, data_list, ignore=None):
     print(x_int)
     plt.plot([np.min(cog_list)-5, x_int+5], [0, 0], 'k-')
     plt.plot([np.min(cog_list), x_int+2], [lobf1(np.min(cog_list)), lobf1(x_int+2)], 'k-')
-    plt.plot(x_int, 0, 'rx', label='Stick Free Neutral Point: ' + str(format(x_int, '.2f')) + '%')
+    plt.plot(x_int, 0, 'rx', label='Stick Free Neutral Point ' + r'$h^\prime_n $' + ' : ' + str(format(x_int, '.2f')) + '%')
     plt.xlabel('CoG %')
-    plt.ylabel('Elevator Tab Gradient')
-    plt.legend(loc='lower right', shadow=True)
+    plt.ylabel('Elevator Gradient (' + r'd$\beta$/d$C_L$' + ')')
+    plt.legend(loc='upper right', shadow=True)
     plt.grid(True)
     plt.title("Graph to Detirmine Neutral Point, Controls Free")
     plt.savefig('graphs/neutralpointStaticFree.png')
@@ -183,7 +187,7 @@ print(str(cl(B_mass, B_static[0][2])))
 """
 #plot_static_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static],
  #                       ignore=[[1], [0], None, [1], None])
-#plot_static_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
+plot_static_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
 
 plot_static_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
 
