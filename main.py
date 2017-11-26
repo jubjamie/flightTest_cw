@@ -73,7 +73,7 @@ def cl(masses, v):
     return c_l
 
 
-def plot_neutral(masses_list, data_list, ignore=None):
+def plot_static_stick_free(masses_list, data_list, ignore=None):
     point_bank = ['ro', 'bo', 'co', 'go', 'mo', 'rx', 'bx', 'cx', 'gx', 'mx']
     max_c_l = []
     gradient_record = []
@@ -119,8 +119,10 @@ def plot_neutral(masses_list, data_list, ignore=None):
     plt.legend(loc='lower right', shadow=True)
     plt.grid(True)
     plt.title("Graph to Detirmine Neutral Point, Controls Fixed")
-    plt.savefig('graphs/neutralpointStatic.png')
+    plt.savefig('graphs/neutralpointStaticFixed.png')
     plt.show()
+
+
 
 
 """
@@ -131,7 +133,7 @@ print(str(cogcalc(D_mass, row_pos)))
 print(str(cogcalc(E_mass, row_pos)))
 print(str(cl(B_mass, B_static[0][2])))
 """
-#plot_neutral([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static],
-#             ignore=[[1], [0], None, [1], None])
-plot_neutral([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
+plot_static_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static],
+             ignore=[[1], [0], None, [1], None])
+#plot_static_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
 

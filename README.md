@@ -6,7 +6,7 @@ These graphs automatically update to show the latest versions pushed to this rep
 
 <p align="center">
 
-<img src="graphs/staticstability.png?raw=true" />
-<img src="graphs/neutralpointStatic.png?raw=true" />
+<img src="graphs/staticstabilityFixed.png?raw=true" />
+<img src="graphs/neutralpointStaticFixed.png?raw=true" />
 
 </p>
