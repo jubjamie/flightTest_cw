@@ -78,7 +78,7 @@ def plot_neutral(masses_list, data_list, ignore=None):
     max_c_l = []
     gradient_record = []
     cog_list = []
-    plt.figure()
+    plt.figure(figsize=(10, 7))
     for data_id, masses in enumerate(masses_list):
         data = data_list[data_id]
         c_l = []
@@ -102,9 +102,9 @@ def plot_neutral(masses_list, data_list, ignore=None):
     plt.legend(loc='lower left', shadow=True)
     plt.grid(True)
     plt.title("Static Stability, Controls Fixed")
-    plt.savefig('/graphs/staticstability.png')
+    plt.savefig('graphs/staticstability.png')
 
-    plt.figure()
+    plt.figure(figsize=(8, 6))
     plt.plot(cog_list, gradient_record, 'ro')
     z1 = np.polyfit(cog_list, gradient_record, 1)
     lobf1 = np.poly1d(z1)
@@ -119,7 +119,7 @@ def plot_neutral(masses_list, data_list, ignore=None):
     plt.legend(loc='lower right', shadow=True)
     plt.grid(True)
     plt.title("Graph to Detirmine Neutral Point, Controls Fixed")
-    plt.savefig('/graphs/neutralpointStatic.png')
+    plt.savefig('graphs/neutralpointStatic.png')
     plt.show()
 
 
