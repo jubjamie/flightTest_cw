@@ -6,7 +6,6 @@ These graphs automatically update to show the latest versions pushed to this rep
 
 <p align="center">
 
-![Static Stability](graphs/staticstability.png?raw=true "Static Stability")
-![Neutral Point](graphs/neutralpointStatic.png?raw=true "Neutral Point")
+<img src="graphs/staticstability.png?raw=true" />
 
 </p>
