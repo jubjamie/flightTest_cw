@@ -73,6 +73,8 @@ def cl(masses, v):
     return c_l
 
 
+# TODO Move x-AXIS to centre using spines
+
 def plot_static_stick_fixed(masses_list, data_list, ignore=None):
     point_bank = ['ro', 'bo', 'co', 'go', 'mo', 'rx', 'bx', 'cx', 'gx', 'mx']
     max_c_l = []
