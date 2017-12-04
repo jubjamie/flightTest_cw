@@ -4,6 +4,8 @@ This is my calculation scripts for a flight test I conducted. The graphs below u
 ## Graphs
 These graphs automatically update to show the latest versions pushed to this repository.
 
+### Static
+
 <h3>Stick Fixed</h3>
 <p align="center">
 <img src="graphs/staticstabilityFixed.png?raw=true" /><br />
@@ -14,4 +16,12 @@ These graphs automatically update to show the latest versions pushed to this rep
 <p align="center">
 <img src="graphs/staticstabilityFree.png?raw=true" />
 <img src="graphs/neutralpointStaticFree.png?raw=true" />
+</p>
+
+### Manoeuvre
+
+<h3>Stick Fixed</h3>
+<p align="center">
+<img src="graphs/manstabilityFixed.png?raw=true" /><br />
+<img src="graphs/manpointManFixed.png?raw=true" />
 </p>
