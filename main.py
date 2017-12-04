@@ -62,6 +62,7 @@ def cogcalc(masses, pos):
     cogpos = ((np.sum(mx)/np.sum(m)) - 5.149) * (100/1.717)
     return cogpos
 
+
 def knts2ms(v):
     return v * 0.51444
 
@@ -179,6 +180,57 @@ def plot_static_stick_free(masses_list, data_list, ignore=None):
     plt.show()
 
 
+def plot_man_stick_fixed(masses_list, data_list, ignore=None):
+    point_bank = ['ro', 'bo', 'co', 'go', 'mo', 'rx', 'bx', 'cx', 'gx', 'mx']
+    max_gee = []
+    gradient_record = []
+    cog_list = []
+    plt.figure(figsize=(10, 7))
+    for data_id, masses in enumerate(masses_list):
+        data = data_list[data_id]
+        gee = []
+        angle = []
+        cog_list.append(cogcalc(masses, row_pos))
+        for test_id, test in enumerate(data):
+            if ignore is None or ignore[data_id] is None or test_id not in ignore[data_id]:
+                gee.append(test[2])
+                angle.append(test[0])
+
+        z = np.polyfit(gee, angle, 1)
+        gradient_record.append(z[0])
+        plt.plot(gee, angle, point_bank[data_id % len(point_bank)],
+                 label='LoBF: ' + r'$\eta$' + '=[' + str(format(z[0], '.3f')) + 'g + ' +
+                       str(format(z[1], '.3f')) + ']  CoG: ' + str(format(cogcalc(masses, row_pos), '.2f')) +
+                       '% ' + r'$\bar{c}$')
+        lobf = np.poly1d(z)
+        plt.plot([0, np.max(gee)], [lobf(0), lobf(np.max(gee))], 'k-')
+        max_gee.append(np.max(gee))
+    plt.plot([0, np.max(max_gee)], [0, 0], 'k-')
+    plt.xlabel('Normal Acceleration (g)')
+    plt.ylabel('Elevator Angle (' + r'$\eta^\circ$' + ')')
+    plt.legend(loc='lower left', shadow=True)
+    plt.grid(True)
+    plt.title("Manoeuvre Stability, Controls Fixed")
+    plt.savefig('graphs/manstabilityFixed.png')
+
+    plt.figure(figsize=(8, 6))
+    plt.plot(cog_list, gradient_record, 'ro')
+    z1 = np.polyfit(cog_list, gradient_record, 1)
+    lobf1 = np.poly1d(z1)
+    # find x intercept
+    x_int = (0-z1[1])/z1[0]
+    print(x_int)
+    plt.plot([np.min(cog_list)-5, x_int+5], [0, 0], 'k-')
+    plt.plot([np.min(cog_list), x_int+2], [lobf1(np.min(cog_list)), lobf1(x_int+2)], 'k-')
+    plt.plot(x_int, 0, 'rx', label='Stick Fixed Manoeuvre Point ' + r'$h_m$' + ' : ' + str(format(x_int, '.2f')) + '%')
+    plt.xlabel('CoG % of ' + r'$\bar{c}$')
+    plt.ylabel('Elevator Gradient (' + r'd$\eta$/dg' + ')')
+    plt.legend(loc='lower right', shadow=True)
+    plt.grid(True)
+    plt.title("Graph to Determine Manoeuvre Point, Controls Fixed")
+    plt.savefig('graphs/manpointManFixed.png')
+    plt.show()
+
 """
 print(str(cogcalc(A_mass, row_pos)))
 print(str(cogcalc(B_mass, row_pos)))
@@ -193,3 +245,4 @@ plot_static_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_s
 
 plot_static_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
 
+plot_man_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man])
