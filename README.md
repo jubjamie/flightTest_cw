@@ -29,5 +29,5 @@ These graphs automatically update to show the latest versions pushed to this rep
 <h3>Stick Free</h3>
 <p align="center">
 <img src="graphs/manstabilityFree.png?raw=true" />
-<img src="graphs/manpointStaticFree.png?raw=true" />
+<img src="graphs/manpointManFree.png?raw=true" />
 </p>
