@@ -12,7 +12,7 @@ These graphs automatically update to show the latest versions pushed to this rep
 <img src="graphs/neutralpointStaticFixed.png?raw=true" />
 </p>
 <br />
-<h3>Stick Fixed</h3>
+<h3>Stick Free</h3>
 <p align="center">
 <img src="graphs/staticstabilityFree.png?raw=true" />
 <img src="graphs/neutralpointStaticFree.png?raw=true" />
