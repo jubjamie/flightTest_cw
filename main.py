@@ -96,7 +96,12 @@ def plot_static_stick_fixed(masses_list, data_list, ignore=None):
                 c_l.append(cl(masses, test[2]))
                 angle.append(test[1])
 
-        z = np.polyfit(c_l, angle, 1)
+        c_l_temp = c_l
+        angle_temp = angle
+        for i in range(1, 1000):
+            c_l_temp.append(0)
+            angle_temp.append(1.25)
+        z = np.polyfit(c_l_temp, angle_temp, 1)
         gradient_record.append(z[0])
         plt.plot(c_l, angle, point_bank[data_id % len(point_bank)],
                  label='LoBF: ' + r'$\eta$' + '=[' + str(format(z[0], '.3f')) + r'$C_L$' + ' + ' +
@@ -147,9 +152,14 @@ def plot_static_stick_free(masses_list, data_list, ignore=None):
             if ignore is None or ignore[data_id] is None or test_id not in ignore[data_id]:
                 c_l.append(cl(masses, test[2]))
                 angle.append(test[0])
-
-        z = np.polyfit(c_l, angle, 1)
+        c_l_temp = c_l[:]
+        angle_temp = angle[:]
+        for i in range(1, 40):
+            c_l_temp.append(0)
+            angle_temp.append(-3.6)
+        z = np.polyfit(c_l_temp, angle_temp, 1)
         gradient_record.append(z[0])
+        print(c_l)
         plt.plot(c_l, angle, point_bank[data_id % len(point_bank)],
                  label='LoBF: ' + r'$\beta$' + '=[' + str(format(z[0], '.3f')) + r'$C_L$' + ' + ' +
                        str(format(z[1], '.3f')) + ']  CoG: ' + str(format(cogcalc(masses, row_pos), '.2f')) +
@@ -299,10 +309,10 @@ print(str(cl(B_mass, B_static[0][2])))
 """
 #plot_static_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static],
  #                       ignore=[[1], [0], None, [1], None])
-plot_static_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
+# plot_static_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
 
 plot_static_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
 
-plot_man_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man])
+# plot_man_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man])
 
-plot_man_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man], [A_link, B_link, C_link, D_link, E_link])
+# plot_man_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man], [A_link, B_link, C_link, D_link, E_link])
