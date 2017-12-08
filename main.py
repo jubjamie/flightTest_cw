@@ -83,6 +83,9 @@ def cl(masses, v):
 def plot_static_stick_fixed(masses_list, data_list, ignore=None):
     point_bank = ['ro', 'bo', 'co', 'go', 'mo', 'rx', 'bx', 'cx', 'gx', 'mx']
     max_c_l = []
+    c_l_record = []
+    angle_record = []
+    intercepts = []
     gradient_record = []
     cog_list = []
     plt.figure(figsize=(10, 7))
@@ -95,21 +98,25 @@ def plot_static_stick_fixed(masses_list, data_list, ignore=None):
             if ignore is None or ignore[data_id] is None or test_id not in ignore[data_id]:
                 c_l.append(cl(masses, test[2]))
                 angle.append(test[1])
+        c_l_record.append(c_l[:])
+        angle_record.append(angle[:])
+        intercepts.append(np.polyfit(c_l, angle, 1)[1])
 
-        c_l_temp = c_l
-        angle_temp = angle
-        for i in range(1, 1000):
+    for data_id, masses in enumerate(masses_list):
+        c_l_temp = c_l_record[data_id][:]
+        angle_temp = angle_record[data_id][:]
+        for i in range(1, 400):
             c_l_temp.append(0)
-            angle_temp.append(1.25)
+            angle_temp.append(np.mean(intercepts))
         z = np.polyfit(c_l_temp, angle_temp, 1)
         gradient_record.append(z[0])
-        plt.plot(c_l, angle, point_bank[data_id % len(point_bank)],
+        plt.plot(c_l_record[data_id], angle_record[data_id], point_bank[data_id % len(point_bank)],
                  label='LoBF: ' + r'$\eta$' + '=[' + str(format(z[0], '.3f')) + r'$C_L$' + ' + ' +
                        str(format(z[1], '.3f')) + ']  CoG: ' + str(format(cogcalc(masses, row_pos), '.2f')) +
                        '% ' + r'$\bar{c}$')
         lobf = np.poly1d(z)
-        plt.plot([0, np.max(c_l)], [lobf(0), lobf(np.max(c_l))], 'k-')
-        max_c_l.append(np.max(c_l))
+        plt.plot([0, np.max(c_l_record[data_id])], [lobf(0), lobf(np.max(c_l_record[data_id]))], 'k-')
+        max_c_l.append(np.max(c_l_record[data_id]))
     plt.plot([0, np.max(max_c_l)], [0, 0], 'k-')
     plt.xlabel(r'$C_L$')
     plt.ylabel('Elevator Angle (' + r'$\eta^\circ$' + ')')
@@ -140,7 +147,10 @@ def plot_static_stick_fixed(masses_list, data_list, ignore=None):
 def plot_static_stick_free(masses_list, data_list, ignore=None):
     point_bank = ['ro', 'bo', 'co', 'go', 'mo', 'rx', 'bx', 'cx', 'gx', 'mx']
     max_c_l = []
+    c_l_record = []
+    angle_record = []
     gradient_record = []
+    intercepts = []
     cog_list = []
     plt.figure(figsize=(10, 7))
     for data_id, masses in enumerate(masses_list):
@@ -152,21 +162,27 @@ def plot_static_stick_free(masses_list, data_list, ignore=None):
             if ignore is None or ignore[data_id] is None or test_id not in ignore[data_id]:
                 c_l.append(cl(masses, test[2]))
                 angle.append(test[0])
-        c_l_temp = c_l[:]
-        angle_temp = angle[:]
-        for i in range(1, 40):
+        c_l_record.append(c_l[:])
+        angle_record.append(angle[:])
+        intercepts.append(np.polyfit(c_l, angle, 1)[1])
+
+    for data_id, masses in enumerate(masses_list):
+        c_l_temp = c_l_record[data_id][:]
+        angle_temp = angle_record[data_id][:]
+        for i in range(1, 400):
             c_l_temp.append(0)
-            angle_temp.append(-3.6)
+            angle_temp.append(np.mean(intercepts))
         z = np.polyfit(c_l_temp, angle_temp, 1)
         gradient_record.append(z[0])
-        print(c_l)
-        plt.plot(c_l, angle, point_bank[data_id % len(point_bank)],
+        print(c_l_record[data_id])
+        plt.plot(c_l_record[data_id], angle_record[data_id], point_bank[data_id % len(point_bank)],
                  label='LoBF: ' + r'$\beta$' + '=[' + str(format(z[0], '.3f')) + r'$C_L$' + ' + ' +
                        str(format(z[1], '.3f')) + ']  CoG: ' + str(format(cogcalc(masses, row_pos), '.2f')) +
                        '% ' + r'$\bar{c}$')
         lobf = np.poly1d(z)
-        plt.plot([0, np.max(c_l)], [lobf(0), lobf(np.max(c_l))], 'k-')
-        max_c_l.append(np.max(c_l))
+        plt.plot([0, np.max(c_l_record[data_id])], [lobf(0), lobf(np.max(c_l_record[data_id]))], 'k-')
+        max_c_l.append(np.max(c_l_record[data_id]))
+
     plt.plot([0, np.max(max_c_l)], [0, 0], 'k-')
     plt.xlabel(r'$C_L$')
     plt.ylabel('Elevator Tab Angle (' + r'$\beta^\circ$' + ')')
@@ -197,6 +213,9 @@ def plot_static_stick_free(masses_list, data_list, ignore=None):
 def plot_man_stick_fixed(masses_list, data_list, ignore=None):
     point_bank = ['ro', 'bo', 'co', 'go', 'mo', 'rx', 'bx', 'cx', 'gx', 'mx']
     max_gee = []
+    gee_record = []
+    angle_record = []
+    intercepts = []
     gradient_record = []
     cog_list = []
     plt.figure(figsize=(10, 7))
@@ -209,16 +228,25 @@ def plot_man_stick_fixed(masses_list, data_list, ignore=None):
             if ignore is None or ignore[data_id] is None or test_id not in ignore[data_id]:
                 gee.append(test[2])
                 angle.append(test[0])
+        gee_record.append(gee[:])
+        angle_record.append(angle[:])
+        intercepts.append(np.polyfit(gee, angle, 1)[1])
 
-        z = np.polyfit(gee, angle, 1)
+    for data_id, masses in enumerate(masses_list):
+        gee_temp = gee_record[data_id][:]
+        angle_temp = angle_record[data_id][:]
+        for i in range(1, 400):
+            gee_temp.append(0)
+            angle_temp.append(np.mean(intercepts))
+        z = np.polyfit(gee_temp, angle_temp, 1)
         gradient_record.append(z[0])
-        plt.plot(gee, angle, point_bank[data_id % len(point_bank)],
+        plt.plot(gee_record[data_id], angle_record[data_id], point_bank[data_id % len(point_bank)],
                  label='LoBF: ' + r'$\eta$' + '=[' + str(format(z[0], '.3f')) + 'g + ' +
                        str(format(z[1], '.3f')) + ']  CoG: ' + str(format(cogcalc(masses, row_pos), '.2f')) +
                        '% ' + r'$\bar{c}$')
         lobf = np.poly1d(z)
-        plt.plot([0, np.max(gee)], [lobf(0), lobf(np.max(gee))], 'k-')
-        max_gee.append(np.max(gee))
+        plt.plot([0, np.max(gee_record[data_id])], [lobf(0), lobf(np.max(gee_record[data_id]))], 'k-')
+        max_gee.append(np.max(gee_record[data_id]))
     plt.plot([0, np.max(max_gee)], [0, 0], 'k-')
     plt.xlabel('Normal Acceleration (g)')
     plt.ylabel('Elevator Angle (' + r'$\eta^\circ$' + ')')
@@ -249,6 +277,9 @@ def plot_man_stick_fixed(masses_list, data_list, ignore=None):
 def plot_man_stick_free(masses_list, data_list, p_spring, ignore=None):
     point_bank = ['ro', 'bo', 'co', 'go', 'mo', 'rx', 'bx', 'cx', 'gx', 'mx']
     max_gee = []
+    gee_record = []
+    pn_record = []
+    intercepts = []
     gradient_record = []
     cog_list = []
     plt.figure(figsize=(10, 7))
@@ -261,16 +292,25 @@ def plot_man_stick_free(masses_list, data_list, p_spring, ignore=None):
             if ignore is None or ignore[data_id] is None or test_id not in ignore[data_id]:
                 gee.append(test[2])
                 pn.append(stickforce(test[1], p_spring[data_id]))
+        gee_record.append(gee[:])
+        pn_record.append(pn[:])
+        intercepts.append(np.polyfit(gee, pn, 1)[1])
 
-        z = np.polyfit(gee, pn, 1)
+    for data_id, masses in enumerate(masses_list):
+        gee_temp = gee_record[data_id][:]
+        pn_temp = pn_record[data_id][:]
+        for i in range(1, 400):
+            gee_temp.append(0)
+            pn_temp.append(np.mean(intercepts))
+        z = np.polyfit(gee_temp, pn_temp, 1)
         gradient_record.append(z[0])
-        plt.plot(gee, pn, point_bank[data_id % len(point_bank)],
+        plt.plot(gee_record[data_id], pn_record[data_id], point_bank[data_id % len(point_bank)],
                  label='LoBF: ' + r'$P_n$' + '=[' + str(format(z[0], '.3f')) + 'g + ' +
                        str(format(z[1], '.3f')) + ']  CoG: ' + str(format(cogcalc(masses, row_pos), '.2f')) +
                        '% ' + r'$\bar{c}$')
         lobf = np.poly1d(z)
-        plt.plot([0, np.max(gee)], [lobf(0), lobf(np.max(gee))], 'k-')
-        max_gee.append(np.max(gee))
+        plt.plot([0, np.max(gee_record[data_id])], [lobf(0), lobf(np.max(gee_record[data_id]))], 'k-')
+        max_gee.append(np.max(gee_record[data_id]))
     plt.plot([0, np.max(max_gee)], [0, 0], 'k-')
     plt.xlabel('Normal Acceleration (g)')
     plt.ylabel('Stick Force (' + r'$P_\eta$' + ' N)')
@@ -311,7 +351,7 @@ print(str(cl(B_mass, B_static[0][2])))
  #                       ignore=[[1], [0], None, [1], None])
 # plot_static_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
 
-plot_static_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
+# plot_static_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
 
 # plot_man_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man])
 
