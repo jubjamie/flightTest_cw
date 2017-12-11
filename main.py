@@ -85,10 +85,11 @@ def matrix_static_stick_fixed(masses_list, data_list):
     m[:, 0] = 1
     eta = np.matrix(np.zeros((25, 1)))
     cog_list = []
-    c_l = []
-    angle = []
+    c_l_record = []
+    angle_record = []
     gradient_record = []
     max_c_l = []
+    plt.figure(figsize=(10, 7))
     for data_id, masses in enumerate(masses_list):
         cog_list.append(cogcalc(masses, row_pos))
         c_l = []
@@ -98,15 +99,19 @@ def matrix_static_stick_fixed(masses_list, data_list):
             m[(5*data_id) + test_id, data_id+1] = cl(masses, test[2])
             c_l.append(cl(masses, test[2]))
             angle.append(test[1])
+        c_l_record.append(c_l)
+        angle_record.append(angle)
     sol = np.dot(m.I, eta)
     print("Solution")
     print(sol)
-    plt.figure(figsize=(10, 7))
+
     #record gradients for backwards compat
     for gd in range(1, 6):
         gradient_record.append(sol[gd, 0])
     for data_id, masses in enumerate(masses_list):
         z = [gradient_record[data_id], sol[0, 0]]
+        c_l = c_l_record[data_id]
+        angle = angle_record[data_id]
         plt.plot(c_l, angle, point_bank[data_id % len(point_bank)],
                  label='LoBF: ' + r'$\eta$' + '=[' + str(format(z[0], '.3f')) + r'$C_L$' + ' + ' +
                        str(format(z[1], '.3f')) + ']  CoG: ' + str(format(cogcalc(masses, row_pos), '.2f')) +
