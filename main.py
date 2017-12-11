@@ -78,6 +78,20 @@ def cl(masses, v):
     return c_l
 
 
+def matrix_static_stick_fixed(masses_list, data_list):
+
+    # create empty matrix to fill
+    m = np.matrix(np.zeros((25, 6)))
+    m[:, 0] = 1
+    eta = np.matrix(np.zeros((25, 1)))
+    for data_id, masses in enumerate(masses_list):
+        for test_id, test in enumerate(data_list[data_id]):
+            eta[(5*data_id) + test_id] = test[1]
+            m[(5*data_id) + test_id, data_id+1] = cl(masses_list, test[2])
+    print(m)
+    print(eta)
+
+
 # TODO Move x-AXIS to centre using spines
 
 def plot_static_stick_fixed(masses_list, data_list, ignore=None):
@@ -299,10 +313,12 @@ print(str(cl(B_mass, B_static[0][2])))
 """
 #plot_static_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static],
  #                       ignore=[[1], [0], None, [1], None])
-plot_static_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
+#plot_static_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
 
-plot_static_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
+#plot_static_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
 
-plot_man_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man])
+#plot_man_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man])
 
-plot_man_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man], [A_link, B_link, C_link, D_link, E_link])
+#plot_man_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man], [A_link, B_link, C_link, D_link, E_link])
+
+matrix_static_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
