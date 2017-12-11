@@ -91,9 +91,6 @@ def matrix_static_stick_fixed(masses_list, data_list):
     max_c_l = []
     fig = plt.figure(figsize=(10, 7))
     ax = fig.add_subplot(1, 1, 1)
-    ax.spines['bottom'].set_position('zero')
-    ax.spines['right'].set_color('none')
-    ax.spines['top'].set_color('none')
     ax.xaxis.set_ticks_position('bottom')
 
     for data_id, masses in enumerate(masses_list):
@@ -125,7 +122,6 @@ def matrix_static_stick_fixed(masses_list, data_list):
         lobf = np.poly1d(z)
         plt.plot([0, np.max(c_l)], [lobf(0), lobf(np.max(c_l))], 'k-')
         max_c_l.append(np.max(c_l))
-    # plt.plot([0, np.max(max_c_l)], [0, 0], 'k-')
     plt.xlabel(r'$C_L$')
     plt.ylabel('Elevator Angle (' + r'$\eta^\circ$' + ')')
     plt.legend(loc='lower left', shadow=True)
@@ -135,22 +131,18 @@ def matrix_static_stick_fixed(masses_list, data_list):
     print(end)
     ax.xaxis.set_ticks(np.arange(0, end, step))
     plt.xlim(0, end-step)
+    plt.plot([0, end-step], [0, 0], 'k-')
     plt.title("Static Stability, Controls Fixed")
     plt.savefig('graphs/staticstabilityFixed.png')
 
     fig2 = plt.figure(figsize=(8, 6))
     ax = fig2.add_subplot(1, 1, 1)
-    ax.spines['bottom'].set_position('zero')
-    ax.spines['right'].set_color('none')
-    ax.spines['top'].set_color('none')
-    ax.xaxis.set_ticks_position('bottom')
     plt.plot(cog_list, gradient_record, 'ro')
     z1 = np.polyfit(cog_list, gradient_record, 1)
     lobf1 = np.poly1d(z1)
     # find x intercept
     x_int = (0 - z1[1]) / z1[0]
     print(x_int)
-    plt.plot([np.min(cog_list) - 5, x_int + 5], [0, 0], 'k-')
     plt.plot([np.min(cog_list), x_int + 2], [lobf1(np.min(cog_list)), lobf1(x_int + 2)], 'k-')
     plt.plot(x_int, 0, 'rx', label='Stick Fixed Neutral Point ' + r'$h_n$' + ' : ' + str(format(x_int, '.2f')) + '%')
     plt.xlabel('CoG % of ' + r'$\bar{c}$')
@@ -164,6 +156,7 @@ def matrix_static_stick_fixed(masses_list, data_list):
     print(end)
     ax.xaxis.set_ticks(np.arange(0, end, step))
     plt.xlim(start, end - step)
+    plt.plot([start, end-step], [0, 0], 'k-')
     plt.title("Graph to Detirmine Neutral Point, Controls Fixed")
     plt.savefig('graphs/neutralpointStaticFixed.png')
     plt.show()
