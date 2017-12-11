@@ -161,6 +161,258 @@ def matrix_static_stick_fixed(masses_list, data_list):
     plt.savefig('graphs/neutralpointStaticFixed.png')
     plt.show()
 
+def matrix_static_stick_free(masses_list, data_list):
+    point_bank = ['ro', 'bo', 'co', 'go', 'mo', 'rx', 'bx', 'cx', 'gx', 'mx']
+    # create empty matrix to fill
+    m = np.matrix(np.zeros((25, 6)))
+    m[:, 0] = 1
+    eta = np.matrix(np.zeros((25, 1)))
+    cog_list = []
+    c_l_record = []
+    angle_record = []
+    gradient_record = []
+    max_c_l = []
+    fig = plt.figure(figsize=(10, 7))
+    ax = fig.add_subplot(1, 1, 1)
+    ax.xaxis.set_ticks_position('bottom')
+
+    for data_id, masses in enumerate(masses_list):
+        cog_list.append(cogcalc(masses, row_pos))
+        c_l = []
+        angle = []
+        for test_id, test in enumerate(data_list[data_id]):
+            eta[(5*data_id) + test_id] = test[0]
+            m[(5*data_id) + test_id, data_id+1] = cl(masses, test[2])
+            c_l.append(cl(masses, test[2]))
+            angle.append(test[0])
+        c_l_record.append(c_l)
+        angle_record.append(angle)
+    sol = np.dot(m.I, eta)
+    print("Solution")
+    print(sol)
+
+    #record gradients for backwards compat
+    for gd in range(1, 6):
+        gradient_record.append(sol[gd, 0])
+    for data_id, masses in enumerate(masses_list):
+        z = [gradient_record[data_id], sol[0, 0]]
+        c_l = c_l_record[data_id]
+        angle = angle_record[data_id]
+        plt.plot(c_l, angle, point_bank[data_id % len(point_bank)],
+                 label='LoBF: ' + r'$\beta$' + '=[' + str(format(z[0], '.3f')) + r'$C_L$' + ' + ' +
+                       str(format(z[1], '.3f')) + ']  CoG: ' + str(format(cogcalc(masses, row_pos), '.2f')) +
+                       '% ' + r'$\bar{c}$')
+        lobf = np.poly1d(z)
+        plt.plot([0, np.max(c_l)], [lobf(0), lobf(np.max(c_l))], 'k-')
+        max_c_l.append(np.max(c_l))
+    plt.xlabel(r'$C_L$')
+    plt.ylabel('Elevator Tab Angle (' + r'$\beta^\circ$' + ')')
+    plt.legend(loc='upper left', shadow=True)
+    plt.grid(True)
+    step = 0.1
+    end = step * (int(np.max(max_c_l)/step) + 2)
+    print(end)
+    ax.xaxis.set_ticks(np.arange(0, end, step))
+    plt.xlim(0, end-step)
+    plt.plot([0, end-step], [0, 0], 'k-')
+    plt.title("Static Stability, Controls Free")
+    plt.savefig('graphs/staticstabilityFree.png')
+
+    fig2 = plt.figure(figsize=(8, 6))
+    ax = fig2.add_subplot(1, 1, 1)
+    plt.plot(cog_list, gradient_record, 'ro')
+    z1 = np.polyfit(cog_list, gradient_record, 1)
+    lobf1 = np.poly1d(z1)
+    # find x intercept
+    x_int = (0 - z1[1]) / z1[0]
+    print(x_int)
+    plt.plot([np.min(cog_list), x_int], [lobf1(np.min(cog_list)), 0], 'k-')
+    plt.plot(x_int, 0, 'rx',
+             label='Stick Free Neutral Point ' + r'$h^\prime_n $' + ' : ' + str(format(x_int, '.2f')) + '%')
+    plt.xlabel('CoG % of ' + r'$\bar{c}$')
+    plt.ylabel('Elevator Gradient (' + r'd$\beta$/d$C_L$' + ')')
+    plt.legend(loc='upper right', shadow=True)
+    plt.grid(True)
+    step = 5
+    start = step * (int(np.min(cog_list) / step) - 2)
+    print(start)
+    end = step * (int(x_int / step) + 2)
+    print(end)
+    ax.xaxis.set_ticks(np.arange(0, end, step))
+    plt.xlim(start, end - step)
+    plt.plot([start, end-step], [0, 0], 'k-')
+    plt.title("Graph to Detirmine Neutral Point, Controls Free")
+    plt.savefig('graphs/neutralpointStaticFree.png')
+    plt.show()
+
+
+def matrix_man_stick_fixed(masses_list, data_list):
+    point_bank = ['ro', 'bo', 'co', 'go', 'mo', 'rx', 'bx', 'cx', 'gx', 'mx']
+    # create empty matrix to fill
+    m = np.matrix(np.zeros((25, 6)))
+    m[:, 0] = 1
+    eta = np.matrix(np.zeros((25, 1)))
+    cog_list = []
+    gee_record = []
+    angle_record = []
+    gradient_record = []
+    max_gee = []
+    fig = plt.figure(figsize=(10, 7))
+    ax = fig.add_subplot(1, 1, 1)
+
+    for data_id, masses in enumerate(masses_list):
+        cog_list.append(cogcalc(masses, row_pos))
+        gee = []
+        angle = []
+        for test_id, test in enumerate(data_list[data_id]):
+            eta[(5*data_id) + test_id] = test[0]
+            m[(5*data_id) + test_id, data_id+1] = test[2]
+            gee.append(test[2])
+            angle.append(test[0])
+        gee_record.append(gee)
+        angle_record.append(angle)
+    sol = np.dot(m.I, eta)
+    print("Solution")
+    print(sol)
+
+    #record gradients for backwards compat
+    for gd in range(1, 6):
+        gradient_record.append(sol[gd, 0])
+    for data_id, masses in enumerate(masses_list):
+        z = [gradient_record[data_id], sol[0, 0]]
+        gee = gee_record[data_id]
+        angle = angle_record[data_id]
+        plt.plot(gee, angle, point_bank[data_id % len(point_bank)],
+                 label='LoBF: ' + r'$\eta$' + '=[' + str(format(z[0], '.3f')) + 'g + ' +
+                       str(format(z[1], '.3f')) + ']  CoG: ' + str(format(cogcalc(masses, row_pos), '.2f')) +
+                       '% ' + r'$\bar{c}$')
+        lobf = np.poly1d(z)
+        plt.plot([0, np.max(gee)], [lobf(0), lobf(np.max(gee))], 'k-')
+        max_gee.append(np.max(gee))
+    plt.xlabel('Normal Acceleration (g)')
+    plt.ylabel('Elevator Angle (' + r'$\eta^\circ$' + ')')
+    plt.legend(loc='lower left', shadow=True)
+    plt.grid(True)
+    step = 0.25
+    end = step * (int(np.max(max_gee)/step) + 2)
+    print(end)
+    ax.xaxis.set_ticks(np.arange(0, end, step))
+    plt.xlim(0, end-step)
+    plt.plot([0, end-step], [0, 0], 'k-')
+    plt.title("Manoeuvre Stability, Controls Fixed")
+    plt.savefig('graphs/manstabilityFixed.png')
+
+    fig2 = plt.figure(figsize=(8, 6))
+    ax = fig2.add_subplot(1, 1, 1)
+    plt.plot(cog_list, gradient_record, 'ro')
+    z1 = np.polyfit(cog_list, gradient_record, 1)
+    lobf1 = np.poly1d(z1)
+    # find x intercept
+    x_int = (0 - z1[1]) / z1[0]
+    print(x_int)
+    plt.plot([np.min(cog_list), x_int + 2], [lobf1(np.min(cog_list)), lobf1(x_int + 2)], 'k-')
+    plt.plot(x_int, 0, 'rx', label='Stick Fixed Manoeuvre Point ' + r'$h_m$' + ' : ' + str(format(x_int, '.2f')) + '%')
+    plt.xlabel('CoG % of ' + r'$\bar{c}$')
+    plt.ylabel('Elevator Gradient (' + r'd$\eta$/dg' + ')')
+    plt.legend(loc='lower right', shadow=True)
+    plt.grid(True)
+    step = 5
+    start = step * (int(np.min(cog_list) / step) - 2)
+    print(start)
+    end = step * (int(x_int / step) + 2)
+    print(end)
+    ax.xaxis.set_ticks(np.arange(0, end, step))
+    plt.xlim(start, end - step)
+    plt.plot([start, end-step], [0, 0], 'k-')
+    plt.title("Graph to Determine Manoeuvre Point, Controls Fixed")
+    plt.savefig('graphs/manpointManFixed.png')
+    plt.show()
+
+
+def matrix_man_stick_free(masses_list, data_list, p_spring):
+    point_bank = ['ro', 'bo', 'co', 'go', 'mo', 'rx', 'bx', 'cx', 'gx', 'mx']
+    # create empty matrix to fill
+    m = np.matrix(np.zeros((25, 6)))
+    m[:, 0] = 1
+    eta = np.matrix(np.zeros((25, 1)))
+    cog_list = []
+    gee_record = []
+    pn_record = []
+    gradient_record = []
+    max_gee = []
+    fig = plt.figure(figsize=(10, 7))
+    ax = fig.add_subplot(1, 1, 1)
+
+    for data_id, masses in enumerate(masses_list):
+        cog_list.append(cogcalc(masses, row_pos))
+        gee = []
+        pn = []
+        for test_id, test in enumerate(data_list[data_id]):
+            eta[(5*data_id) + test_id] = stickforce(test[1], p_spring[data_id])
+            m[(5*data_id) + test_id, data_id+1] = test[2]
+            gee.append(test[2])
+            pn.append(stickforce(test[1], p_spring[data_id]))
+        gee_record.append(gee)
+        pn_record.append(pn)
+    sol = np.dot(m.I, eta)
+    print("Solution")
+    print(sol)
+
+    #record gradients for backwards compat
+    for gd in range(1, 6):
+        gradient_record.append(sol[gd, 0])
+    for data_id, masses in enumerate(masses_list):
+        z = [gradient_record[data_id], sol[0, 0]]
+        gee = gee_record[data_id]
+        pn = pn_record[data_id]
+        plt.plot(gee, pn, point_bank[data_id % len(point_bank)],
+                 label='LoBF: ' + r'$P_n$' + '=[' + str(format(z[0], '.3f')) + 'g + ' +
+                       str(format(z[1], '.3f')) + ']  CoG: ' + str(format(cogcalc(masses, row_pos), '.2f')) +
+                       '% ' + r'$\bar{c}$')
+        lobf = np.poly1d(z)
+        plt.plot([0, np.max(gee)], [lobf(0), lobf(np.max(gee))], 'k-')
+        max_gee.append(np.max(gee))
+    plt.xlabel('Normal Acceleration (g)')
+    plt.ylabel('Stick Force (' + r'$P_\eta$' + ' N)')
+    plt.legend(loc='lower right', shadow=True)
+    plt.grid(True)
+    step = 0.25
+    end = step * (int(np.max(max_gee)/step) + 2)
+    print(end)
+    ax.xaxis.set_ticks(np.arange(0, end, step))
+    plt.xlim(0, end-step)
+    plt.plot([0, end-step], [0, 0], 'k-')
+    plt.title("Manoeuvre Stability, Controls Free")
+    plt.savefig('graphs/manstabilityFree.png')
+
+    fig2 = plt.figure(figsize=(8, 6))
+    ax = fig2.add_subplot(1, 1, 1)
+    plt.plot(cog_list, gradient_record, 'ro')
+    z1 = np.polyfit(cog_list, gradient_record, 1)
+    lobf1 = np.poly1d(z1)
+    # find x intercept
+    x_int = (0 - z1[1]) / z1[0]
+    print("16% Stick Force: " + str(lobf1(16)))
+    print("37% Stick Force: " + str(lobf1(37)))
+    plt.plot([np.min(cog_list), x_int + 2], [lobf1(np.min(cog_list)), lobf1(x_int + 2)], 'k-')
+    plt.plot(x_int, 0, 'rx',
+             label='Stick Free Manoeuvre Point ' + r'$h^\prime_m$' + ' : ' + str(format(x_int, '.2f')) + '%')
+    plt.xlabel('CoG % of ' + r'$\bar{c}$')
+    plt.ylabel('Stick Force Gradient (' + r'd$P_\eta$/dg' + ')')
+    plt.legend(loc='lower left', shadow=True)
+    plt.grid(True)
+    step = 5
+    start = step * (int(np.min(cog_list) / step) - 2)
+    print(start)
+    end = step * (int(x_int / step) + 2)
+    print(end)
+    ax.xaxis.set_ticks(np.arange(0, end, step))
+    plt.xlim(start, end - step)
+    plt.plot([start, end-step], [0, 0], 'k-')
+    plt.title("Graph to Determine Manoeuvre Point, Controls Free")
+    plt.savefig('graphs/manpointManFree.png')
+    plt.show()
+
 # TODO Move x-AXIS to centre using spines
 
 def plot_static_stick_fixed(masses_list, data_list, ignore=None):
@@ -390,4 +642,12 @@ print(str(cl(B_mass, B_static[0][2])))
 
 #plot_man_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man], [A_link, B_link, C_link, D_link, E_link])
 
-matrix_static_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
+# MATRIX BELOW
+
+# matrix_static_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
+
+# matrix_static_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
+
+# matrix_man_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man])
+
+matrix_man_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man], [A_link, B_link, C_link, D_link, E_link])
