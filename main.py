@@ -157,6 +157,13 @@ def matrix_static_stick_fixed(masses_list, data_list):
     plt.ylabel('Elevator Gradient (' + r'd$\eta$/d$C_L$' + ')')
     plt.legend(loc='lower right', shadow=True)
     plt.grid(True)
+    step = 5
+    start = step * (int(np.min(cog_list) / step) - 2)
+    print(start)
+    end = step * (int(x_int / step) + 2)
+    print(end)
+    ax.xaxis.set_ticks(np.arange(0, end, step))
+    plt.xlim(start, end - step)
     plt.title("Graph to Detirmine Neutral Point, Controls Fixed")
     plt.savefig('graphs/neutralpointStaticFixed.png')
     plt.show()
