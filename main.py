@@ -89,7 +89,13 @@ def matrix_static_stick_fixed(masses_list, data_list):
     angle_record = []
     gradient_record = []
     max_c_l = []
-    plt.figure(figsize=(10, 7))
+    fig = plt.figure(figsize=(10, 7))
+    ax = fig.add_subplot(1, 1, 1)
+    ax.spines['bottom'].set_position('zero')
+    ax.spines['right'].set_color('none')
+    ax.spines['top'].set_color('none')
+    ax.xaxis.set_ticks_position('bottom')
+
     for data_id, masses in enumerate(masses_list):
         cog_list.append(cogcalc(masses, row_pos))
         c_l = []
@@ -119,15 +125,25 @@ def matrix_static_stick_fixed(masses_list, data_list):
         lobf = np.poly1d(z)
         plt.plot([0, np.max(c_l)], [lobf(0), lobf(np.max(c_l))], 'k-')
         max_c_l.append(np.max(c_l))
-    plt.plot([0, np.max(max_c_l)], [0, 0], 'k-')
+    # plt.plot([0, np.max(max_c_l)], [0, 0], 'k-')
     plt.xlabel(r'$C_L$')
     plt.ylabel('Elevator Angle (' + r'$\eta^\circ$' + ')')
     plt.legend(loc='lower left', shadow=True)
     plt.grid(True)
+    step = 0.1
+    end = step * (int(np.max(max_c_l)/step) + 2)
+    print(end)
+    ax.xaxis.set_ticks(np.arange(0, end, step))
+    plt.xlim(0, end-step)
     plt.title("Static Stability, Controls Fixed")
     plt.savefig('graphs/staticstabilityFixed.png')
 
-    plt.figure(figsize=(8, 6))
+    fig2 = plt.figure(figsize=(8, 6))
+    ax = fig2.add_subplot(1, 1, 1)
+    ax.spines['bottom'].set_position('zero')
+    ax.spines['right'].set_color('none')
+    ax.spines['top'].set_color('none')
+    ax.xaxis.set_ticks_position('bottom')
     plt.plot(cog_list, gradient_record, 'ro')
     z1 = np.polyfit(cog_list, gradient_record, 1)
     lobf1 = np.poly1d(z1)
