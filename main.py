@@ -79,21 +79,66 @@ def cl(masses, v):
 
 
 def matrix_static_stick_fixed(masses_list, data_list):
-
+    point_bank = ['ro', 'bo', 'co', 'go', 'mo', 'rx', 'bx', 'cx', 'gx', 'mx']
     # create empty matrix to fill
     m = np.matrix(np.zeros((25, 6)))
     m[:, 0] = 1
     eta = np.matrix(np.zeros((25, 1)))
+    cog_list = []
+    c_l = []
+    angle = []
+    gradient_record = []
+    max_c_l = []
     for data_id, masses in enumerate(masses_list):
+        cog_list.append(cogcalc(masses, row_pos))
+        c_l = []
+        angle = []
         for test_id, test in enumerate(data_list[data_id]):
             eta[(5*data_id) + test_id] = test[1]
             m[(5*data_id) + test_id, data_id+1] = cl(masses, test[2])
-    print(m)
-    print(eta)
+            c_l.append(cl(masses, test[2]))
+            angle.append(test[1])
     sol = np.dot(m.I, eta)
     print("Solution")
     print(sol)
+    plt.figure(figsize=(10, 7))
+    #record gradients for backwards compat
+    for gd in range(1, 6):
+        gradient_record.append(sol[gd, 0])
+    for data_id, masses in enumerate(masses_list):
+        z = [gradient_record[data_id], sol[0, 0]]
+        plt.plot(c_l, angle, point_bank[data_id % len(point_bank)],
+                 label='LoBF: ' + r'$\eta$' + '=[' + str(format(z[0], '.3f')) + r'$C_L$' + ' + ' +
+                       str(format(z[1], '.3f')) + ']  CoG: ' + str(format(cogcalc(masses, row_pos), '.2f')) +
+                       '% ' + r'$\bar{c}$')
+        lobf = np.poly1d(z)
+        plt.plot([0, np.max(c_l)], [lobf(0), lobf(np.max(c_l))], 'k-')
+        max_c_l.append(np.max(c_l))
+    plt.plot([0, np.max(max_c_l)], [0, 0], 'k-')
+    plt.xlabel(r'$C_L$')
+    plt.ylabel('Elevator Angle (' + r'$\eta^\circ$' + ')')
+    plt.legend(loc='lower left', shadow=True)
+    plt.grid(True)
+    plt.title("Static Stability, Controls Fixed")
+    plt.savefig('graphs/staticstabilityFixed.png')
 
+    plt.figure(figsize=(8, 6))
+    plt.plot(cog_list, gradient_record, 'ro')
+    z1 = np.polyfit(cog_list, gradient_record, 1)
+    lobf1 = np.poly1d(z1)
+    # find x intercept
+    x_int = (0 - z1[1]) / z1[0]
+    print(x_int)
+    plt.plot([np.min(cog_list) - 5, x_int + 5], [0, 0], 'k-')
+    plt.plot([np.min(cog_list), x_int + 2], [lobf1(np.min(cog_list)), lobf1(x_int + 2)], 'k-')
+    plt.plot(x_int, 0, 'rx', label='Stick Fixed Neutral Point ' + r'$h_n$' + ' : ' + str(format(x_int, '.2f')) + '%')
+    plt.xlabel('CoG % of ' + r'$\bar{c}$')
+    plt.ylabel('Elevator Gradient (' + r'd$\eta$/d$C_L$' + ')')
+    plt.legend(loc='lower right', shadow=True)
+    plt.grid(True)
+    plt.title("Graph to Detirmine Neutral Point, Controls Fixed")
+    plt.savefig('graphs/neutralpointStaticFixed.png')
+    plt.show()
 
 # TODO Move x-AXIS to centre using spines
 
