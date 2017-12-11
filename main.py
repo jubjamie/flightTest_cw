@@ -87,9 +87,12 @@ def matrix_static_stick_fixed(masses_list, data_list):
     for data_id, masses in enumerate(masses_list):
         for test_id, test in enumerate(data_list[data_id]):
             eta[(5*data_id) + test_id] = test[1]
-            m[(5*data_id) + test_id, data_id+1] = cl(masses_list, test[2])
+            m[(5*data_id) + test_id, data_id+1] = cl(masses, test[2])
     print(m)
     print(eta)
+    sol = np.dot(m.I, eta)
+    print("Solution")
+    print(sol)
 
 
 # TODO Move x-AXIS to centre using spines
