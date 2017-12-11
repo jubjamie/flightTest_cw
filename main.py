@@ -106,6 +106,7 @@ def matrix_static_stick_fixed(masses_list, data_list):
         angle_record.append(angle)
     sol = np.dot(m.I, eta)
     print(m)
+    print(eta)
     print("Solution")
     print(sol)
 
