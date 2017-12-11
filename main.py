@@ -105,6 +105,7 @@ def matrix_static_stick_fixed(masses_list, data_list):
         c_l_record.append(c_l)
         angle_record.append(angle)
     sol = np.dot(m.I, eta)
+    print(m)
     print("Solution")
     print(sol)
 
@@ -644,10 +645,10 @@ print(str(cl(B_mass, B_static[0][2])))
 
 # MATRIX BELOW
 
-# matrix_static_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
+matrix_static_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
 
 # matrix_static_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
 
 # matrix_man_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man])
 
-matrix_man_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man], [A_link, B_link, C_link, D_link, E_link])
+# matrix_man_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man], [A_link, B_link, C_link, D_link, E_link])
