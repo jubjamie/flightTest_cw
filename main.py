@@ -118,7 +118,7 @@ def matrix_static_stick_fixed(masses_list, data_list):
         c_l = c_l_record[data_id]
         angle = angle_record[data_id]
         plt.plot(c_l, angle, point_bank[data_id % len(point_bank)],
-                 label='LoBF: ' + r'$\eta$' + '=[' + str(format(z[0], '.3f')) + r'$C_L$' + ' + ' +
+                 label=r'$\eta$' + '=[' + str(format(z[0], '.3f')) + r'$C_L$' + ' + ' +
                        str(format(z[1], '.3f')) + ']  CoG: ' + str(format(cogcalc(masses, row_pos), '.2f')) +
                        '% ' + r'$\bar{c}$')
         lobf = np.poly1d(z)
@@ -201,7 +201,7 @@ def matrix_static_stick_free(masses_list, data_list):
         c_l = c_l_record[data_id]
         angle = angle_record[data_id]
         plt.plot(c_l, angle, point_bank[data_id % len(point_bank)],
-                 label='LoBF: ' + r'$\beta$' + '=[' + str(format(z[0], '.3f')) + r'$C_L$' + ' + ' +
+                 label=r'$\beta$' + '=[' + str(format(z[0], '.3f')) + r'$C_L$' + ' + ' +
                        str(format(z[1], '.3f')) + ']  CoG: ' + str(format(cogcalc(masses, row_pos), '.2f')) +
                        '% ' + r'$\bar{c}$')
         lobf = np.poly1d(z)
@@ -285,7 +285,7 @@ def matrix_man_stick_fixed(masses_list, data_list):
         gee = gee_record[data_id]
         angle = angle_record[data_id]
         plt.plot(gee, angle, point_bank[data_id % len(point_bank)],
-                 label='LoBF: ' + r'$\eta$' + '=[' + str(format(z[0], '.3f')) + 'g + ' +
+                 label=r'$\eta$' + '=[' + str(format(z[0], '.3f')) + 'g + ' +
                        str(format(z[1], '.3f')) + ']  CoG: ' + str(format(cogcalc(masses, row_pos), '.2f')) +
                        '% ' + r'$\bar{c}$')
         lobf = np.poly1d(z)
@@ -368,7 +368,7 @@ def matrix_man_stick_free(masses_list, data_list, p_spring):
         gee = gee_record[data_id]
         pn = pn_record[data_id]
         plt.plot(gee, pn, point_bank[data_id % len(point_bank)],
-                 label='LoBF: ' + r'$P_n$' + '=[' + str(format(z[0], '.3f')) + 'g + ' +
+                 label=r'$P_n$' + '=[' + str(format(z[0], '.3f')) + 'g + ' +
                        str(format(z[1], '.3f')) + ']  CoG: ' + str(format(cogcalc(masses, row_pos), '.2f')) +
                        '% ' + r'$\bar{c}$')
         lobf = np.poly1d(z)
@@ -436,7 +436,7 @@ def plot_static_stick_fixed(masses_list, data_list, ignore=None):
         z = np.polyfit(c_l, angle, 1)
         gradient_record.append(z[0])
         plt.plot(c_l, angle, point_bank[data_id % len(point_bank)],
-                 label='LoBF: ' + r'$\eta$' + '=[' + str(format(z[0], '.3f')) + r'$C_L$' + ' + ' +
+                 label=r'$\eta$' + '=[' + str(format(z[0], '.3f')) + r'$C_L$' + ' + ' +
                        str(format(z[1], '.3f')) + ']  CoG: ' + str(format(cogcalc(masses, row_pos), '.2f')) +
                        '% ' + r'$\bar{c}$')
         lobf = np.poly1d(z)
@@ -488,7 +488,7 @@ def plot_static_stick_free(masses_list, data_list, ignore=None):
         z = np.polyfit(c_l, angle, 1)
         gradient_record.append(z[0])
         plt.plot(c_l, angle, point_bank[data_id % len(point_bank)],
-                 label='LoBF: ' + r'$\beta$' + '=[' + str(format(z[0], '.3f')) + r'$C_L$' + ' + ' +
+                 label=r'$\beta$' + '=[' + str(format(z[0], '.3f')) + r'$C_L$' + ' + ' +
                        str(format(z[1], '.3f')) + ']  CoG: ' + str(format(cogcalc(masses, row_pos), '.2f')) +
                        '% ' + r'$\bar{c}$')
         lobf = np.poly1d(z)
@@ -540,7 +540,7 @@ def plot_man_stick_fixed(masses_list, data_list, ignore=None):
         z = np.polyfit(gee, angle, 1)
         gradient_record.append(z[0])
         plt.plot(gee, angle, point_bank[data_id % len(point_bank)],
-                 label='LoBF: ' + r'$\eta$' + '=[' + str(format(z[0], '.3f')) + 'g + ' +
+                 label=r'$\eta$' + '=[' + str(format(z[0], '.3f')) + 'g + ' +
                        str(format(z[1], '.3f')) + ']  CoG: ' + str(format(cogcalc(masses, row_pos), '.2f')) +
                        '% ' + r'$\bar{c}$')
         lobf = np.poly1d(z)
@@ -592,7 +592,7 @@ def plot_man_stick_free(masses_list, data_list, p_spring, ignore=None):
         z = np.polyfit(gee, pn, 1)
         gradient_record.append(z[0])
         plt.plot(gee, pn, point_bank[data_id % len(point_bank)],
-                 label='LoBF: ' + r'$P_n$' + '=[' + str(format(z[0], '.3f')) + 'g + ' +
+                 label=r'$P_n$' + '=[' + str(format(z[0], '.3f')) + 'g + ' +
                        str(format(z[1], '.3f')) + ']  CoG: ' + str(format(cogcalc(masses, row_pos), '.2f')) +
                        '% ' + r'$\bar{c}$')
         lobf = np.poly1d(z)
@@ -646,10 +646,10 @@ print(str(cl(B_mass, B_static[0][2])))
 
 # MATRIX BELOW
 
-# matrix_static_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
+matrix_static_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
 
-# matrix_static_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
+matrix_static_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
 
 matrix_man_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man])
 
-# matrix_man_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man], [A_link, B_link, C_link, D_link, E_link])
+matrix_man_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man], [A_link, B_link, C_link, D_link, E_link])
