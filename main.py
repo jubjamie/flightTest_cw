@@ -1,6 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+#Graph Utility
+point_bank = ['ro', 'bo', 'co', 'go', 'mo', 'rx', 'bx', 'cx', 'gx', 'mx']
+
 # Constants
 aircraft_data = [4949, 27505]
 Sw = 25.083  # m2
@@ -79,7 +82,6 @@ def cl(masses, v):
 
 
 def matrix_static_stick_fixed(masses_list, data_list):
-    point_bank = ['ro', 'bo', 'co', 'go', 'mo', 'rx', 'bx', 'cx', 'gx', 'mx']
     # create empty matrix to fill
     m = np.matrix(np.zeros((25, 6)))
     m[:, 0] = 1
@@ -164,7 +166,6 @@ def matrix_static_stick_fixed(masses_list, data_list):
     plt.show()
 
 def matrix_static_stick_free(masses_list, data_list):
-    point_bank = ['ro', 'bo', 'co', 'go', 'mo', 'rx', 'bx', 'cx', 'gx', 'mx']
     # create empty matrix to fill
     m = np.matrix(np.zeros((25, 6)))
     m[:, 0] = 1
@@ -249,7 +250,6 @@ def matrix_static_stick_free(masses_list, data_list):
 
 
 def matrix_man_stick_fixed(masses_list, data_list):
-    point_bank = ['ro', 'bo', 'co', 'go', 'mo', 'rx', 'bx', 'cx', 'gx', 'mx']
     # create empty matrix to fill
     m = np.matrix(np.zeros((25, 6)))
     m[:, 0] = 1
@@ -332,7 +332,6 @@ def matrix_man_stick_fixed(masses_list, data_list):
 
 
 def matrix_man_stick_free(masses_list, data_list, p_spring):
-    point_bank = ['ro', 'bo', 'co', 'go', 'mo', 'rx', 'bx', 'cx', 'gx', 'mx']
     # create empty matrix to fill
     m = np.matrix(np.zeros((25, 6)))
     m[:, 0] = 1
