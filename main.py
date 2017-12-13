@@ -295,7 +295,7 @@ def matrix_man_stick_fixed(masses_list, data_list):
         lobf = np.poly1d(z)
         plt.plot([0, np.max(gee)], [lobf(0), lobf(np.max(gee))], 'k-')
         max_gee.append(np.max(gee))
-    plt.xlabel('Normal Acceleration (g)')
+    plt.xlabel('Normal Acceleration (' + r'$n_z$' + ') [g]')
     plt.ylabel('Elevator Angle (' + r'$\eta^\circ$' + ')')
     plt.legend(loc='lower left', shadow=True)
     plt.grid(True)
@@ -319,7 +319,7 @@ def matrix_man_stick_fixed(masses_list, data_list):
     plt.plot([np.min(cog_list), x_int + 2], [lobf1(np.min(cog_list)), lobf1(x_int + 2)], 'k-')
     plt.plot(x_int, 0, 'rx', label='Stick Fixed Manoeuvre Point ' + r'$h_m$' + ' : ' + str(format(x_int, '.2f')) + '%')
     plt.xlabel('CoG % of ' + r'$\bar{c}$')
-    plt.ylabel('Elevator Gradient (' + r'd$\eta$/dg' + ')')
+    plt.ylabel('Elevator Gradient (' + r'd$\eta$/d$n_z$' + ')')
     plt.legend(loc='lower right', shadow=True)
     plt.grid(True)
     step = 5
@@ -377,7 +377,7 @@ def matrix_man_stick_free(masses_list, data_list, p_spring):
         lobf = np.poly1d(z)
         plt.plot([0, np.max(gee)], [lobf(0), lobf(np.max(gee))], 'k-')
         max_gee.append(np.max(gee))
-    plt.xlabel('Normal Acceleration (g)')
+        plt.xlabel('Normal Acceleration (' + r'$n_z$' + ') [g]')
     plt.ylabel('Stick Force (' + r'$P_\eta$' + ' N)')
     plt.legend(loc='lower right', shadow=True)
     plt.grid(True)
@@ -403,7 +403,7 @@ def matrix_man_stick_free(masses_list, data_list, p_spring):
     plt.plot(x_int, 0, 'rx',
              label='Stick Free Manoeuvre Point ' + r'$h^\prime_m$' + ' : ' + str(format(x_int, '.2f')) + '%')
     plt.xlabel('CoG % of ' + r'$\bar{c}$')
-    plt.ylabel('Stick Force Gradient (' + r'd$P_\eta$/dg' + ')')
+    plt.ylabel('Stick Force Gradient (' + r'd$P_\eta$/d$n_z$' + ')')
     plt.legend(loc='lower left', shadow=True)
     plt.grid(True)
     step = 5
