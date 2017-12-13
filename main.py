@@ -1,3 +1,7 @@
+"""
+This is the main script for generating the graphs.
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 
