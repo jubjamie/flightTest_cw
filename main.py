@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 #Graph Utility
-point_bank = ['ro', 'bo', 'co', 'go', 'mo', 'rx', 'bx', 'cx', 'gx', 'mx']
+point_bank = ['rD', 'bo', 'cx', 'gs', 'm^', 'rp', 'bx', 'cx', 'gx', 'mx']
 
 # Constants
 aircraft_data = [4949, 27505]
