@@ -237,7 +237,7 @@ def matrix_static_stick_free(masses_list, data_list):
     plt.plot(x_int, 0, 'rx',
              label='Stick Free Neutral Point ' + r'$h^\prime_n $' + ' : ' + str(format(x_int, '.2f')) + '%')
     plt.xlabel('CoG % of ' + r'$\bar{c}$')
-    plt.ylabel('Elevator Gradient (' + r'd$\beta$/d$C_L$' + ')')
+    plt.ylabel('Elevator Tab Gradient (' + r'd$\beta$/d$C_L$' + ')')
     plt.legend(loc='upper right', shadow=True)
     plt.grid(True)
     step = 5
