@@ -249,10 +249,10 @@ def matrix_static_stick_free(masses_list, data_list):
     ax.xaxis.set_ticks(np.arange(0, end, step))
     plt.xlim(start, end - step)
     plt.plot([start, end-step], [0, 0], 'k-')
-    plt.plot([start, end - step], [5, 5], 'k:', label="CS-251.73 Requirement Equivalent")
+    plt.plot([start, end - step], [5, 5], 'k:', label="CS-25.173 Requirement Equivalent")
     plt.legend(loc='upper right', shadow=True)
     plt.title("Graph to Detirmine Neutral Point, Controls Free")
-    plt.savefig('graphs/neutralpointStaticFree.png')
+    plt.savefig('graphs/neutralpointStaticFreenoSpring.png')
     plt.show()
 
 
