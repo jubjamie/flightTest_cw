@@ -401,6 +401,8 @@ def matrix_man_stick_free(masses_list, data_list, p_spring):
     # find x intercept
     x_int = (0 - z1[1]) / z1[0]
     print("16% Stick Force: " + str(lobf1(16)))
+    print(str(np.min(cog_list)) + "% Stick Force: " + str(lobf1(np.min(cog_list))))
+    print(str(np.max(cog_list)) + "% Stick Force: " + str(lobf1(np.max(cog_list))))
     print("37% Stick Force: " + str(lobf1(37)))
     plt.plot([np.min(cog_list), x_int + 2], [lobf1(np.min(cog_list)), lobf1(x_int + 2)], 'k-')
     plt.plot(x_int, 0, 'rx',
@@ -424,8 +426,8 @@ def matrix_man_stick_free(masses_list, data_list, p_spring):
 
 #matrix_static_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
 
-matrix_static_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
+# matrix_static_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
 
 #matrix_man_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man])
 
-#matrix_man_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man], [A_link, B_link, C_link, D_link, E_link])
+matrix_man_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man], [A_link, B_link, C_link, D_link, E_link])
