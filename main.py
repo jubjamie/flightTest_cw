@@ -233,12 +233,13 @@ def matrix_static_stick_free(masses_list, data_list):
     # find x intercept
     x_int = (0 - z1[1]) / z1[0]
     print(x_int)
-    plt.plot([np.min(cog_list), x_int], [lobf1(np.min(cog_list)), 0], 'k-')
+    nospring = x_int-37.5
+    plt.plot([np.min(cog_list), x_int], [lobf1(np.min(cog_list)), 0], 'k-', label="With Spring")
+    plt.plot([np.min(cog_list)-nospring, x_int-nospring], [lobf1(np.min(cog_list)), 0], 'k--', label="No Spring Approximation")
     plt.plot(x_int, 0, 'rx',
              label='Stick Free Neutral Point ' + r'$h^\prime_n $' + ' : ' + str(format(x_int, '.2f')) + '%')
     plt.xlabel('CoG % of ' + r'$\bar{c}$')
     plt.ylabel('Elevator Tab Gradient (' + r'd$\beta$/d$C_L$' + ')')
-    plt.legend(loc='upper right', shadow=True)
     plt.grid(True)
     step = 5
     start = step * (int(np.min(cog_list) / step) - 2)
@@ -248,6 +249,8 @@ def matrix_static_stick_free(masses_list, data_list):
     ax.xaxis.set_ticks(np.arange(0, end, step))
     plt.xlim(start, end - step)
     plt.plot([start, end-step], [0, 0], 'k-')
+    plt.plot([start, end - step], [5, 5], 'k:', label="CS-251.73 Requirement Equivalent")
+    plt.legend(loc='upper right', shadow=True)
     plt.title("Graph to Detirmine Neutral Point, Controls Free")
     plt.savefig('graphs/neutralpointStaticFree.png')
     plt.show()
@@ -419,10 +422,10 @@ def matrix_man_stick_free(masses_list, data_list, p_spring):
     plt.show()
 
 
-matrix_static_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
+#matrix_static_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
 
 matrix_static_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_static, B_static, C_static, D_static, E_static])
 
-matrix_man_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man])
+#matrix_man_stick_fixed([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man])
 
-matrix_man_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man], [A_link, B_link, C_link, D_link, E_link])
+#matrix_man_stick_free([A_mass, B_mass, C_mass, D_mass, E_mass], [A_man, B_man, C_man, D_man, E_man], [A_link, B_link, C_link, D_link, E_link])
